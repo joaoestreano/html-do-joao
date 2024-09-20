@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Certificado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <h1>Gerar Certificado</h1>
+    <input type="text" id="name" placeholder="Nome" required>
+    <input type="text" id="course" placeholder="Curso" required>
+    <button onclick="createCertificate()">Gerar Certificado</button>
+
+    <script>
+        function createCertificate() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const name = document.getElementById('name').value;
+            const course = document.getElementById('course').value;
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = `${date.getMonth() + 1}`.padStart(2, '0');
+            const day = `${date.getDay()}`.padStart(2, '0');
+            console.log(month);
+            console.log(day);
+
+            // Adiciona um fundo branco
+            doc.setFillColor(255, 255, 255);
+            doc.rect(0, 0, 210, 297, 'F');
+
+            // Título
+            doc.setFontSize(36);
+            doc.text("Certificado de Conclusão", 105, 50, null, null, "center");
+
+            // Texto do certificado
+            doc.setFontSize(24);
+            doc.text("Este certificado é concedido a:", 105, 100, null, null, "center");
+            doc.setFontSize(28);
+            doc.text(name, 105, 130, null, null, "center");
+            doc.setFontSize(24);
+            doc.text("por concluir o curso:", 105, 160, null, null, "center");
+            doc.setFontSize(28);
+            doc.text(course, 105, 190, null, null, "center");
+            doc.setFontSize(20);
+            doc.text(`Data: ${date}`, 105, 220, null, null, "center");
+
+            // Salva o PDF
+            doc.save(`certificado_${name.replace(/\s+/g, '_')}.pdf`);
+        }
+    </script>
+</body>
+</html>
